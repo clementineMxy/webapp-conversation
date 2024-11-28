@@ -3,7 +3,7 @@ export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
 export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const APP_INFO: AppInfo = {
-  title: 'Chat APP',
+  title: 'MBF 智能助手',
   description: '',
   copyright: '',
   privacy_policy: '',
@@ -11,7 +11,7 @@ export const APP_INFO: AppInfo = {
 }
 
 export const isShowPrompt = true
-export const promptTemplate = 'I want you to act as a javascript console.'
+export const promptTemplate = '我可以根据提问检索MBF文档，为你提供有用的信息。'
 
 export const API_PREFIX = '/api'
 

@@ -165,7 +165,7 @@ const Welcome: FC<IWelcomeProps> = ({
             header={
               <>
                 <PanelTitle
-                  title=""
+                  title="你好，我是 MBF 智能助手"
                   className='mb-1'
                 />
                 <PromptTemplate html={highLightPromoptTemplate} />
@@ -233,7 +233,7 @@ const Welcome: FC<IWelcomeProps> = ({
           header={
             <>
               <PanelTitle
-                title=""
+                title="你好，我是 MBF 智能助手"
                 className='mb-1'
               />
               <PromptTemplate html={highLightPromoptTemplate} />
@@ -249,7 +249,7 @@ const Welcome: FC<IWelcomeProps> = ({
         header={
           <>
             <PanelTitle
-              title=""
+              title="你好，我是 MBF 智能助手"
               className='mb-1'
             />
             <PromptTemplate html={highLightPromoptTemplate} />
