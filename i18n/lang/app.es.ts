@@ -8,10 +8,8 @@ const translation = {
     newChat: 'Nuevo chat',
     newChatDefaultName: 'Nueva conversación',
     openingStatementTitle: 'Frase de apertura',
-    powerBy: 'Desarrollado por',
     prompt: 'Prompt',
     privatePromptConfigTitle: 'Ajustes de conversación',
-    publicPromptConfigTitle: 'Prompt inicial',
     configStatusDes: 'Antes de comenzar, puede modificar la configuración de la conversación',
     configDisabled:
       'La configuración de la sesión anterior se ha utilizado para esta sesión.',

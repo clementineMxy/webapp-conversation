@@ -165,7 +165,7 @@ const Welcome: FC<IWelcomeProps> = ({
             header={
               <>
                 <PanelTitle
-                  title={t('app.chat.publicPromptConfigTitle')}
+                  title=""
                   className='mb-1'
                 />
                 <PromptTemplate html={highLightPromoptTemplate} />
@@ -233,7 +233,7 @@ const Welcome: FC<IWelcomeProps> = ({
           header={
             <>
               <PanelTitle
-                title={t('app.chat.publicPromptConfigTitle')}
+                title=""
                 className='mb-1'
               />
               <PromptTemplate html={highLightPromoptTemplate} />
@@ -249,7 +249,7 @@ const Welcome: FC<IWelcomeProps> = ({
         header={
           <>
             <PanelTitle
-              title={t('app.chat.publicPromptConfigTitle')}
+              title=""
               className='mb-1'
             />
             <PromptTemplate html={highLightPromoptTemplate} />
