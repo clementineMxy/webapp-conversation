@@ -14,6 +14,7 @@ import Tooltip from '@/app/components/base/tooltip'
 import WorkflowProcess from '@/app/components/workflow/workflow-process'
 import { Markdown } from '@/app/components/base/markdown'
 import type { Emoji } from '@/types/tools'
+import CitationList from './citationList'
 
 const OperationBtn = ({ innerContent, onClick, className }: { innerContent: React.ReactNode; onClick?: () => void; className?: string }) => (
   <div
@@ -70,7 +71,7 @@ const Answer: FC<IAnswerProps> = ({
   isResponding,
   allToolIcons,
 }) => {
-  const { id, content, feedback, agent_thoughts, workflowProcess } = item
+  const { id, content, citation, feedback, agent_thoughts, workflowProcess } = item
   const isAgentMode = !!agent_thoughts && agent_thoughts.length > 0
 
   const { t } = useTranslation()
@@ -190,7 +191,10 @@ const Answer: FC<IAnswerProps> = ({
                 : (isAgentMode
                   ? agentModeAnswer
                   : (
-                    <Markdown content={content} />
+                    <>
+                      <Markdown content={content} />
+                      { citation && citation.length > 0 && <CitationList citation={citation} /> }
+                    </>
                   ))}
             </div>
             <div className='absolute top-[-14px] right-[-14px] flex flex-row justify-end gap-1'>

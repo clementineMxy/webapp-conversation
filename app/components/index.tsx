@@ -47,7 +47,7 @@ const Main: FC = () => {
 
   useEffect(() => {
     if (APP_INFO?.title)
-      document.title = `${APP_INFO.title} - Powered by Dify`
+      document.title = APP_INFO.title
   }, [APP_INFO?.title])
 
   // onData change thought (the produce obj). https://github.com/immerjs/immer/issues/576
@@ -132,11 +132,11 @@ const Main: FC = () => {
             content: item.query,
             isAnswer: false,
             message_files: item.message_files?.filter((file: any) => file.belongs_to === 'user') || [],
-
           })
           newChatList.push({
             id: item.id,
             content: item.answer,
+            citation: item.retriever_resources,
             agent_thoughts: addFileInfos(item.agent_thoughts ? sortAgentSorts(item.agent_thoughts) : item.agent_thoughts, item.message_files),
             feedback: item.feedback,
             isAnswer: true,
@@ -498,6 +498,8 @@ const Main: FC = () => {
           setChatList(newListWithAnswer)
           return
         }
+        // support show citation
+        responseItem.citation = messageEnd.metadata.retriever_resources
         const newListWithAnswer = produce(
           getChatList().filter(item => item.id !== responseItem.id && item.id !== placeholderAnswerId),
           (draft) => {
