@@ -10,7 +10,7 @@ import Toast from '@/app/components/base/toast'
 import Sidebar from '@/app/components/sidebar'
 import ConfigSence from '@/app/components/config-scence'
 import Header from '@/app/components/header'
-import { fetchAppParams, fetchChatList, fetchConversations, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
+import { fetchAppParams, fetchChatList, fetchConversations, deleteConversation, generationConversationName, sendChatMessage, updateFeedback } from '@/service'
 import type { ChatItem, ConversationItem, Feedbacktype, PromptConfig, VisionFile, VisionSettings } from '@/types/app'
 import { Resolution, TransferMethod, WorkflowRunningStatus } from '@/types/app'
 import Chat from '@/app/components/chat'
@@ -153,6 +153,10 @@ const Main: FC = () => {
   useEffect(handleConversationSwitch, [currConversationId, inited])
 
   const handleConversationIdChange = (id: string) => {
+    if (isResponding) {
+      notify({ type: 'info', message: t('app.errorMessage.waitForResponse') })
+      return
+    }
     if (id === '-1') {
       createNewChat()
       setConversationIdChangeBecauseOfNew(true)
@@ -163,6 +167,18 @@ const Main: FC = () => {
     // trigger handleConversationSwitch
     setCurrConversationId(id, APP_ID)
     hideSidebar()
+  }
+
+  const handleDeleteConversation = async (id: string) => {
+    if (id === '-1') {
+      setConversationList(conversationList.filter(item => item.id !== '-1'))
+      return
+    }
+    await deleteConversation(id)
+    const newConversationList = conversationList.filter(item => item.id !== id)
+    setConversationList(newConversationList)
+    if (id === currConversationId)
+      setCurrConversationId(newConversationList[0].id, APP_ID)
   }
 
   /*
@@ -599,8 +615,8 @@ const Main: FC = () => {
       <Sidebar
         list={conversationList}
         onCurrentIdChange={handleConversationIdChange}
+        onConversationDelete={handleDeleteConversation}
         currentId={currConversationId}
-        copyRight={APP_INFO.copyright || APP_INFO.title}
       />
     )
   }

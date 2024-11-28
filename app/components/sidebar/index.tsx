@@ -4,8 +4,12 @@ import { useTranslation } from 'react-i18next'
 import {
   ChatBubbleOvalLeftEllipsisIcon,
   PencilSquareIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline'
-import { ChatBubbleOvalLeftEllipsisIcon as ChatBubbleOvalLeftEllipsisSolidIcon } from '@heroicons/react/24/solid'
+import { 
+  ChatBubbleOvalLeftEllipsisIcon as ChatBubbleOvalLeftEllipsisSolidIcon,
+  TrashIcon as TrashSolidIcon,
+} from '@heroicons/react/24/solid'
 import Button from '@/app/components/base/button'
 import type { ConversationItem } from '@/types/app'
 
@@ -16,16 +20,16 @@ function classNames(...classes: any[]) {
 const MAX_CONVERSATION_LENTH = 20
 
 export type ISidebarProps = {
-  copyRight: string
   currentId: string
   onCurrentIdChange: (id: string) => void
+  onConversationDelete: (id: string) => void
   list: ConversationItem[]
 }
 
 const Sidebar: FC<ISidebarProps> = ({
-  copyRight,
   currentId,
   onCurrentIdChange,
+  onConversationDelete,
   list,
 }) => {
   const { t } = useTranslation()
@@ -48,6 +52,7 @@ const Sidebar: FC<ISidebarProps> = ({
           const isCurrent = item.id === currentId
           const ItemIcon
             = isCurrent ? ChatBubbleOvalLeftEllipsisSolidIcon : ChatBubbleOvalLeftEllipsisIcon
+          const DeleteIcon = isCurrent ? TrashSolidIcon : TrashIcon
           return (
             <div
               onClick={() => onCurrentIdChange(item.id)}
@@ -59,15 +64,24 @@ const Sidebar: FC<ISidebarProps> = ({
                 'group flex items-center rounded-md px-2 py-2 text-sm font-medium cursor-pointer',
               )}
             >
-              <ItemIcon
-                className={classNames(
-                  isCurrent
-                    ? 'text-primary-600'
-                    : 'text-gray-400 group-hover:text-gray-500',
-                  'mr-3 h-5 w-5 flex-shrink-0',
-                )}
-                aria-hidden="true"
-              />
+              { isCurrent ? 
+                  <ItemIcon
+                    className={classNames(
+                      'text-primary-600 mr-3 h-5 w-5 flex-shrink-0',
+                    )}
+                    aria-hidden="true"
+                  /> :
+                  <DeleteIcon
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      onConversationDelete(item.id)
+                    }}
+                    className={classNames(
+                      'text-gray-400 hover:text-red-500 mr-3 h-5 w-5 flex-shrink-0',
+                    )}
+                    aria-hidden="true"
+                  />
+              }
               {item.name}
             </div>
           )
