@@ -3,10 +3,12 @@ import { ChatClient } from 'dify-client'
 import { v4 } from 'uuid'
 import { API_KEY, API_URL, APP_ID } from '@/config'
 
-const userPrefix = `user_${APP_ID}:`
+// const userPrefix = `user_${APP_ID}:`
 
 export const getInfo = (request: NextRequest) => {
   const sessionId = request.cookies.get('session_id')?.value || v4()
+  const app_id = request.cookies.get('APP_ID')?.value || 'default_app_id'
+  const userPrefix = `user_${app_id}:`
   const user = userPrefix + sessionId
   return {
     sessionId,

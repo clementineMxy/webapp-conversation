@@ -1,5 +1,32 @@
 import type { AppInfo } from '@/types/app'
-export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
+// export const APP_ID = `${process.env.NEXT_PUBLIC_APP_ID}`
+
+export const setCookie = (name: string, value: string, days: number) => {
+  const expires = new Date(Date.now() + days * 86400000).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+};
+
+export const deleteCookie = (name: string) => {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+};
+
+export const getCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
+
+let app_id = 'default_app_id'
+if (typeof window !== 'undefined') {
+  if (getCookie('APP_ID')) {
+    app_id = getCookie('APP_ID') as string
+  } else {
+    app_id = Math.random().toString(36).substring(2, 10)
+    setCookie('APP_ID', app_id, 1000)
+  }
+}
+export const APP_ID = app_id
+
 export const API_KEY = `${process.env.NEXT_PUBLIC_APP_KEY}`
 export const API_URL = `${process.env.NEXT_PUBLIC_API_URL}`
 export const APP_INFO: AppInfo = {

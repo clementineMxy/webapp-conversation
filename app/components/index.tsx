@@ -25,8 +25,9 @@ import { addFileInfos, sortAgentSorts } from '@/utils/tools'
 
 const Main: FC = () => {
   const { t } = useTranslation()
-  const media = useBreakpoints()
-  const isMobile = media === MediaType.mobile
+  // const media = useBreakpoints()
+  // const isMobile = media === MediaType.mobile
+  const isMobile = true
   const hasSetAppConfig = APP_ID && API_KEY
 
   /*
@@ -57,6 +58,17 @@ const Main: FC = () => {
       setAutoFreeze(true)
     }
   }, [])
+
+  const cleanupConversations = async () => {
+    let promises = []
+    for(let i = 0; i < conversationList.length; i++) {
+      const item = conversationList[i]
+      if (item.id !== '-1') {
+        promises.push(deleteConversation(item.id))
+      }
+    }
+    await Promise.all(promises)
+  }
 
   /*
   * conversation info
@@ -396,7 +408,6 @@ const Main: FC = () => {
         setAbortController(abortController)
       },
       onData: (message: string, isFirstMessage: boolean, { conversationId: newConversationId, messageId, taskId }: any) => {
-        console.log('onData', responseItem);
         if (!isAgentMode) {
           responseItem.content = responseItem.content + message
         }
@@ -494,7 +505,6 @@ const Main: FC = () => {
         })
       },
       onMessageEnd: (messageEnd) => {
-        console.log('onMessageEnd', messageEnd);
         if (messageEnd.metadata?.annotation_reply) {
           responseItem.id = messageEnd.id
           responseItem.annotation = ({
@@ -621,11 +631,11 @@ const Main: FC = () => {
     )
   }
 
-  // if (appUnavailable)
-  //   return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
+  if (appUnavailable)
+    return <AppUnavailable isUnknownReason={isUnknownReason} errMessage={!hasSetAppConfig ? 'Please set APP_ID and API_KEY in config/index.tsx' : ''} />
 
-  // if (!APP_ID || !APP_INFO || !promptConfig)
-  //   return <Loading type='app' />
+  if (!APP_ID || !APP_INFO || !promptConfig)
+    return <Loading type='app' />
 
   return (
     <div className='bg-gray-100'>
@@ -635,11 +645,11 @@ const Main: FC = () => {
         onShowSideBar={showSidebar}
         onCreateNewChat={() => handleConversationIdChange('-1')}
       />
-      <div className="flex rounded-t-2xl bg-white overflow-hidden">
+      <div className="flex rounded-t-2xl bg-white overflow-hidden relative">
         {/* sidebar */}
         {!isMobile && renderSidebar()}
         {isMobile && isShowSidebar && (
-          <div className='fixed inset-0 z-50'
+          <div className='absolute inset-0 z-50'
             style={{ backgroundColor: 'rgba(35, 56, 118, 0.2)' }}
             onClick={hideSidebar}
           >
@@ -664,7 +674,7 @@ const Main: FC = () => {
 
           {
             hasSetInputs && (
-              <div className='relative grow h-[200px] pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
+              <div className='px-4 relative grow h-[200px] pc:w-[794px] max-w-full mobile:w-full pb-[66px] mx-auto mb-3.5 overflow-hidden'>
                 <div className='h-full overflow-y-auto' ref={chatListDomRef}>
                   <Chat
                     chatList={chatList}
