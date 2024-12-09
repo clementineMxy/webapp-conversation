@@ -4,7 +4,9 @@ WORKDIR /app
 
 COPY . .
 
-RUN yarn install
+ENV YARN_REGISTRY=https://registry.npmmirror.com 
+
+RUN yarn install --registry $YARN_REGISTRY
 RUN yarn build
 
 EXPOSE 3004
