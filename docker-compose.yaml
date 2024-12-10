@@ -1,0 +1,5 @@
+services:
+  webapp-conversation:
+    image: webapp-conversation
+    ports:
+      - "3004:3004"
